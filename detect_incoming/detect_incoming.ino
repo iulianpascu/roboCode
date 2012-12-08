@@ -12,7 +12,10 @@ const int MOTOR2_PIN2 = 9;
 
 int culFD, culFS, culSD, culSS, distS;//x; distanta
 
-boolean danger_ahead = true;
+const int forward_mvmt = 10, backward_mvmt = 20, hammering = 30;
+
+
+boolean danger_ahead, danger_behind;
 
 boolean enemy_det = false;
 int first_seen, last_seen;
@@ -30,9 +33,9 @@ void setup()
 }
 
 void random_turn(){ //face
-  go(-144,-255);
+  go(-255,-255);
   delay(500);
-  go(-144,255); 
+  go(-255,255); 
   delay( random(500,1300));
 }
 
@@ -50,6 +53,7 @@ void loop()
  
    
   danger_ahead = culFS < 500 || culFD < 500;
+  danger_behind = culSS < 500 || culSD < 500;
     
   if(danger_ahead){
       random_turn();
@@ -74,7 +78,8 @@ boolean saw_robot(){
 }
 
 void hammer_it(){}
-void avoid_it(){}
+void avoid_it(){
+}
 
 
 void foo(){
