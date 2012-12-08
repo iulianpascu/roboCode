@@ -1,22 +1,17 @@
 //acestia sunt senzorii de culoare: x va fi inlocuit cu nr slot-ului corespunzator de pe placa;
 // exemplu:
-int culFD = 1;//x; culoare
-int culFS = 2;//x; culoare
-int culSD = 3;//x; culoare
-int culSS = 4;//x; culoare
-int distS = 0;//x; distanta
-int s_culFD = 1;//x; culoare
-int s_culFS = 2;//x; culoare
-int s_culSD = 3;//x; culoare
-int s_culSS = 4;//x; culoare
-int s_distS = 0;//x; distanta
-int MOTOR1_PIN1 = 3;
+const int s_culFD = 1;//x; culoare
+const int s_culFS = 2;//x; culoare
+const int s_culSD = 3;//x; culoare
+const int s_culSS = 4;//x; culoare
+const int s_distS = 0;//x; distanta
+const int MOTOR1_PIN1 = 3;
+const int MOTOR1_PIN2 = 5;
+const int MOTOR2_PIN1 = 6;
+const int MOTOR2_PIN2 = 9;
 
-int MOTOR1_PIN2 = 5;
+int culFD, culFS, culSD, culSS, distS;//x; distanta
 
-int MOTOR2_PIN1 = 6;
-
-int MOTOR2_PIN2 = 9;
 boolean danger_ahead = true;
 
 boolean enemy_det = false;
