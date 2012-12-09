@@ -20,7 +20,7 @@ int rot = 1; //cw vs ccw rotation
 
 unsigned long start_time = 0, run_time = 3000, current_time;
 float distance;
-int left, right;
+int left = 0 , right = 0;
 
 
 
@@ -28,18 +28,21 @@ void go_cruise()
 {
     status_robot = cruise;
     start_time = current_time;
-    run_time = random(1000,3000);
+    run_time = random(2000,5000);
     left = 150;
     right= 150;
 }
 
 void go_locate()
 {
+    int semn = -1;
     status_robot = locate;
     start_time = current_time;
-    run_time = random(1000,3000);
-    left = -50;
-    right = 50;
+    run_time = random(3000,6000);
+    if( random(0,20) >= 11) {
+      semn = 1;}
+    left = 50*semn;
+    right = -left;
 }
   
 void go_engage()
@@ -55,7 +58,7 @@ void go_mad()
 {
     status_robot = mad;
     start_time = current_time;
-    run_time = random(3000,7000);
+    run_time = random(3000,5000);
     left = 255;
     right =-255;
 }
@@ -74,10 +77,8 @@ void setup()
 void detect_border(){
   if(culFS < 500){ //alb zona 1
        if(culSS < 650){ //alb zona 3
-         go(120,60);
-         delay(300);
-         go(150,-150);
-         delay(random(400,900));
+         go(255,0);
+         delay(random(400,500));
        }else if(culFD < 500){ //alb zona 2
           go(-150,-150);
           delay(500);
@@ -93,7 +94,7 @@ void detect_border(){
    }
    else if(culFD < 500){ //alb zona 2
      if(culSD < 800){ //alb zona 4
-       go(60,120);
+       go(0,255);
        delay(300);
        go(15,-150);
        delay(random(400,900));
@@ -118,9 +119,9 @@ void loop()
   float volts = analogRead(s_distS)*0.0048828125;
   distance = 65*pow(volts, -1.1);
   current_time = millis();
- 
+/* 
   if(current_time% 400 == 0){
-    Serial.println("dist \tFS \tFD \tSS \tSD");
+    Serial.println("\ndist \tFS \tFD \tSS \tSD");
     Serial.print(distance);
     Serial.print("\t"); 
     Serial.print(culFS);
@@ -130,12 +131,12 @@ void loop()
     Serial.print(culSS);
     Serial.print("\t"); 
     Serial.println(culSD);
-   if(status_robot == cruise)
-    Serial.println("cruise");
-   if(status_robot == locate)
-    Serial.println("locate");
-      if(status_robot == engage)
-    Serial.println("engage");
+    if(status_robot == cruise)
+      Serial.println("ncruise");
+    else if(status_robot == locate)
+      Serial.println("locate");
+    else if(status_robot == engage)
+      Serial.println("engage");
     Serial.println("ctime \tstime \trtime \tfeft \tright");
     Serial.print(current_time);
     Serial.print("\t"); 
@@ -145,16 +146,12 @@ void loop()
     Serial.print("\t"); 
     Serial.print(left);
     Serial.print("\t"); 
-    Serial.println(right);
-/*  Serial.print("current_time is ");
-    Serial.println(current_time);
-    Serial.print("and state is");
-    Serial.println(state);
-    */
+    Serial.println(right); 
   }
-  
+ */ 
+ 
    detect_border();
-//   go(0,0);
+ 
 
    if(status_robot == cruise && start_time + run_time < current_time)
      go_locate();
@@ -164,10 +161,22 @@ void loop()
      go_engage();
    else if(status_robot == engage && start_time + run_time < current_time)
      go_mad();
-   else if(status_robot == engage && start_time + run_time < current_time)
+   else if(status_robot == mad && start_time + run_time < current_time)
+     go_cruise();
 
-    
-  go(left,right);
+ /*
+ if(left == 0 ){
+   left =1 ;
+         go(-255,-255);
+         delay(400);
+ }else if(left == 1){
+   left =2;
+            go(255,-20);
+         delay(400);
+ }else
+         go(0,0); 
+  */
+   go(left,right);
 
 }
 
