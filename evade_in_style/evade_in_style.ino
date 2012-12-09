@@ -32,13 +32,13 @@ void succesor(){
     left = 150;
     right= 150;
   }else if(status_robot == cruise) {
-    status_robot == locate;
+    status_robot = locate;
     start_time = current_time;
     run_time = random(1000,3000);
     left = -50;
     right = 50;
   }else if(status_robot == locate) {
-    status_robot == engage;
+    status_robot = engage;
     start_time = current_time;
     run_time = random(1000,3000);
     left = 255;
@@ -72,7 +72,7 @@ void detect_border(){
          delay(random(400,900));
        }else if(culFD < 500){ //alb zona 2
           go(-150,-150);
-          delay(1000);
+          delay(500);
           go(150,-150);
          delay(random(400,900));
        }else{
@@ -83,18 +83,13 @@ void detect_border(){
        }
        succesor();
    }
-   else if(culFD < 500){ //alb zona 1
-     if(culSD < 800){ //alb zona 3
+   else if(culFD < 500){ //alb zona 2
+     if(culSD < 800){ //alb zona 4
        go(60,120);
        delay(300);
        go(15,-150);
        delay(random(400,900));
-     }else if(culFD < 500){ //alb zona 2
-        go(-150,-150);
-        delay(1000);
-        go(-150,150);
-       delay(random(400,900));
-     }else{
+     }else{  //alb doar acolo zona 1 a fost deja
         go(-150,-150);
         delay(500);
         go(-150,150);
