@@ -12,7 +12,7 @@ const int MOTOR2_PIN2 = 9;
 
 int culFD, culFS, culSD, culSS, distS;//x; distanta
 
-const int wait = 0, evade = 10, cruise = 20, locate = 30, engage = 40;
+const int wait = 0, evade = 10, cruise = 20, locate = 30, engage = 40, mad = 50;
 int status_robot = locate;
 int rot = 1; //cw vs ccw rotation
 //int state[4], no_state = 0;
@@ -24,33 +24,41 @@ int left, right;
 
 
 
-void succesor(){
-  if(status_robot == evade){
+void go_cruise()
+{
     status_robot = cruise;
     start_time = current_time;
     run_time = random(1000,3000);
     left = 150;
     right= 150;
-  }else if(status_robot == cruise) {
+}
+
+void go_locate()
+{
     status_robot = locate;
     start_time = current_time;
     run_time = random(1000,3000);
     left = -50;
     right = 50;
-  }else if(status_robot == locate) {
+}
+  
+void go_engage()
+{
     status_robot = engage;
     start_time = current_time;
-    run_time = random(1000,3000);
+    run_time = random(10000,15000);
     left = 255;
     right =255;
-  }else{
-    status_robot = cruise;
+} 
+
+void go_mad()
+{
+    status_robot = mad;
     start_time = current_time;
-    run_time = random(1000,3000);
-    left = 150;
-    right= 150;
-  }
-}  
+    run_time = random(3000,7000);
+    left = 255;
+    right =-255;
+}
 
 void setup()
 {
@@ -81,7 +89,7 @@ void detect_border(){
           go(150,-150);
           delay(random(400,900));
        }
-       succesor();
+      go_cruise();
    }
    else if(culFD < 500){ //alb zona 2
      if(culSD < 800){ //alb zona 4
@@ -95,7 +103,7 @@ void detect_border(){
         go(-150,150);
         delay(random(400,900));
      }
-     succesor();
+      go_cruise();
  }
 }  
     
@@ -146,17 +154,21 @@ void loop()
   }
   
    detect_border();
+//   go(0,0);
 
    if(status_robot == cruise && start_time + run_time < current_time)
-     succesor();
-   else if(status_robot == locate && (start_time + run_time < current_time || distance < 60))
-       succesor();
-   
+     go_locate();
+   else if(status_robot == locate && start_time + run_time < current_time) 
+     go_cruise();
+   else if(status_robot == locate && distance < 60)
+     go_engage();
    else if(status_robot == engage && start_time + run_time < current_time)
-       succesor();
+     go_mad();
+   else if(status_robot == engage && start_time + run_time < current_time)
 
     
   go(left,right);
+
 }
 
 
